@@ -10,7 +10,7 @@ const UserRoutes = require('./routes/UserRoutes');
 
 const corsOptions = {
     origin: ["https://loomlink.vercel.app"],
-    method: ["GET", "POST", "DELETE"],
+    methods: ["GET", "POST", "DELETE"],
     credentials: true,
 };
 
