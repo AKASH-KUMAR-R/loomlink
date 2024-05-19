@@ -1,0 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+::-webkit-scrollbar {
+    display: none;
+}
+
+.image-card:hover div{
+    transition:all 0.2s;
+    transform: translateY(0);
+}
