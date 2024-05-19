@@ -73,7 +73,7 @@ const SignUpPage = () => {
         if (isLogIn) {
 
             try {
-                const res = await axios.post('/user/login', {
+                const res = await axios.post('https://loomlink-api.vercel.app/user/login', {
                         username: username,
                         password: password,
                 }, {
@@ -99,7 +99,7 @@ const SignUpPage = () => {
         } else {
             
             try {
-                const res = await axios.post('/user/create', {
+                const res = await axios.post('https://loomlink-api.vercel.app/user/create', {
                     username: username,
                     password: password,
                 }, {

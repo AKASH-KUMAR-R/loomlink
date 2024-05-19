@@ -19,7 +19,7 @@ const ImageGallery = () => {
 
     const fetchGalleryImages = async () => {
         try {
-            const res = await axios.get(`/image/gallery/${userKey}`);
+            const res = await axios.get(`https://loomlink-api.vercel.app/image/gallery/${userKey}`);
 
             setImages(res.data.image_urls);
             console.log(res.data.image_urls);
@@ -34,7 +34,7 @@ const ImageGallery = () => {
 
     const handleDelete = async (imageId, index) => {
         try {
-            const res = await axios.delete(`/image/delete/${imageId}`);
+            const res = await axios.delete(`https://loomlink-api.vercel.app/image/delete/${imageId}`);
             setImages( (prev) => {
                 const newImages = [ ...prev.slice(0, index), ...prev.slice(index + 1)];
 

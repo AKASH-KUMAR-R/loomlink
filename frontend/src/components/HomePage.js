@@ -58,7 +58,7 @@ const HomePage = () => {
 
         try {
             setPending(true);
-            const res = await axios.post('/image/upload', formData, {
+            const res = await axios.post('https://loomlink-api.vercel.app/image/upload', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
