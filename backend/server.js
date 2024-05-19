@@ -9,7 +9,7 @@ const ImageRoutes = require('./routes/ImageRoutes');
 const UserRoutes = require('./routes/UserRoutes');
 
 const corsOptions = {
-    origin: ["https://loomlink.vercel.app/"],
+    origin: ["https://loomlink.vercel.app"],
     method: ["GET", "POST", "DELETE"],
     credentials: true,
 };
@@ -32,6 +32,10 @@ app.use((req, res, next) => {
     console.log(req.method, req.path);
     next();
 });
+
+app.get('/', async (req, res) => {
+    res.json({message:"hello world"});
+} );
 
 app.use(express.json());
 
