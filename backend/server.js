@@ -2,11 +2,19 @@ require("dotenv").config();
 
 const express = require('express');
 const mongoose = require('mongoose');
-// const cors = require('cors');
+const cors = require('cors');
 
 const app = express();
 const ImageRoutes = require('./routes/ImageRoutes');
 const UserRoutes = require('./routes/UserRoutes');
+
+const corsOptions = {
+    origin: ["#"],
+    method: ["GET", "POST", "DELETE"],
+    credentials: true,
+};
+
+app.use(cors(corsOptions));
 
 mongoose.connect(process.env.MONGO_URL)
 .then(() => {
@@ -19,14 +27,6 @@ mongoose.connect(process.env.MONGO_URL)
 .catch((e) => {
     console.log(e.message);
 });
-
-// const corsOptions = {
-//     origin: ["#"],
-//     method: ["GET", "POST", "DELETE"],
-//     credentials: true,
-// };
-
-// app.use(cors(corsOptions));
 
 app.use((req, res, next) => {
     console.log(req.method, req.path);

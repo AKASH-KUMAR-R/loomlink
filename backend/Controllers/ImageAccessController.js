@@ -23,7 +23,7 @@ const serviceAdmin = {
 
 admin.initializeApp({
     credential: admin.credential.cert(serviceAdmin),
-    storageBucket: "gs://loomlink-6e5a2.appspot.com",
+    storageBucket: process.env.STORAGE_BUCKET,
 });
 
 const bucket = admin.storage().bucket();
