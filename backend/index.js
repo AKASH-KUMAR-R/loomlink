@@ -33,10 +33,6 @@ app.use((req, res, next) => {
     next();
 });
 
-app.get('/', async (req, res) => {
-    res.json({message:"hello world"});
-} );
-
 app.use(express.json());
 
 app.use('/image',ImageRoutes);

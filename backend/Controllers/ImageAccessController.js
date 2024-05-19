@@ -54,7 +54,7 @@ const addImageToFirebase = async (req, res) => {
 
                 const redirectUrl = `https://storage.googleapis.com/${bucket.name}/${imageFile.name}`;
                 const uniqueId = uuid();
-                const imageUrl = `http://localhost:4000/image/${uniqueId}`;
+                const imageUrl = `https://loomlink-api.vercel.app/image/${uniqueId}`;
 
                 const expireAt = new Date((new Date).getTime() + (24 * 60 * 60 * 1000));
                 
