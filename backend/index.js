@@ -4,9 +4,12 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 
-const app = express();
 const ImageRoutes = require('./routes/ImageRoutes');
 const UserRoutes = require('./routes/UserRoutes');
+
+const app = express();
+
+require('./Scheduler/scheduler');
 
 const corsOptions = {
     origin: ["https://loomlink.vercel.app"],

@@ -3,30 +3,18 @@ const mongoose = require('mongoose');
 const cron = require('node-cron');
 const {v4: uuid} = require('uuid');
 
-const admin = require('firebase-admin');
-
 const ImageModel = require('../Model/ImageModel');
 
-const serviceAdmin = {
-    "type": "service_account",
-    "project_id": process.env.PROJECT_ID,
-    "private_key_id": process.env.PRIVATE_KEY_ID,
-    "private_key": process.env.PRIVATE_KEY,
-    "client_email": process.env.CLIENT_EMAIL,
-    "client_id": process.env.CLIENT_ID,
-    "auth_uri": process.env.AUTH_URL,
-    "token_uri": process.env.TOKEN_URL,
-    "auth_provider_x509_cert_url": process.env.AUTH_PROVIDER_X509_CERT_URL,
-    "client_x509_cert_url": process.env.CLIENT_X509_CERT_URL,
-    "universe_domain": process.env.UNIVERSE_DOMAIN
-};
-
-admin.initializeApp({
-    credential: admin.credential.cert(serviceAdmin),
-    storageBucket: process.env.STORAGE_BUCKET,
-});
+const admin = require('../FirebaseConfig/firebaseAdmin')
 
 const bucket = admin.storage().bucket();
+
+const MILLISECONDS_IN_A_SECOND = 1000;
+const SECONDS_IN_A_MINUTE = 60;
+const MINUTES_IN_AN_HOUR = 60;
+const HOURS_IN_A_DAY = 24;
+
+const ONE_DAY_IN_MILLISECONDS = HOURS_IN_A_DAY * MINUTES_IN_AN_HOUR * SECONDS_IN_A_MINUTE * MILLISECONDS_IN_A_SECOND;
 
 const addImageToFirebase = async (req, res) => {
 
@@ -56,7 +44,7 @@ const addImageToFirebase = async (req, res) => {
                 const uniqueId = uuid();
                 const imageUrl = `https://loomlink-api.vercel.app/image/${uniqueId}`;
 
-                const expireAt = new Date((new Date).getTime() + (24 * 60 * 60 * 1000));
+                const expireAt = new Date((new Date).getTime() + ONE_DAY_IN_MILLISECONDS);
                 
                 const imageDetails = await ImageModel.create({ user_id:user_id, image_id:uniqueId ,originalname: file.originalname, image_url:imageUrl, redirect_url: redirectUrl, file_name: newFilename, expireAt:user_id ? undefined : expireAt });
                 
@@ -146,40 +134,6 @@ const deleteImage = async (req, res) => {
         res.status(500).json({message:"Server side error"});
     }
 };
-
-const removeExpiredImages = async () => {
-
-    try {
-        const currentTimestamp = new Date();
-
-        const filter = {
-            $and: [
-                { expireAt: { $lt:currentTimestamp } },
-                { expireAt: { $exists: true } },
-            ]
-        };
-
-        const deletedImages = await ImageModel.find(filter);
-        const deletedStatus = await ImageModel.deleteMany(filter);
-
-        Promise.all(deletedImages.map((eachImage) => bucket.file(eachImage.file_name).delete()))
-        .then(() => {
-            console.log("Files deleted from firebase");
-        }).catch(err => {
-            console.log(err.message);
-        })
-
-        console.log(deletedImages);
-
-    } catch (error) {
-        console.log(error.message);
-    }
-};
-
-cron.schedule('0 * * * *', async () => {
-    console.log("Performing scheduled operation");
-    await removeExpiredImages();
-});
 
 module.exports = {
     addImageToFirebase,
