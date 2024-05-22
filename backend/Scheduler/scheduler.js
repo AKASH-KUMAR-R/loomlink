@@ -45,4 +45,6 @@ const removeExpiredImages = async () => {
 cron.schedule('*/1 * * * *', async () => {
     console.log("Performing scheduled operation");
     await removeExpiredImages();
-});
+}); 
+
+module.exports = removeExpiredImages;
