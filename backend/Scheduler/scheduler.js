@@ -33,12 +33,15 @@ const removeExpiredImages = async (req, res) => {
                 console.log("Files deleted from firebase");
             }).catch(err => {
                 console.log(err.message);
+                res.status(505).json({message:"Failed to delete image from firebase"});
             })
 
             console.log(deletedImages);
         }
         
+        res.status(200).json({message:"Image deleted successfully"});
     } catch (error) {
+        res.status(505).json({message:"Failed to delete images from firebase"});
         console.log(error.message);
     }
 
