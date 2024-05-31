@@ -48,7 +48,7 @@ const removeExpiredImages = async (req, res) => {
     console.log("cron job ended");
 };
 
-cron.schedule('*/1 * * * *', async () => {
+cron.schedule('0 * * * *', async () => {
     console.log("Performing scheduled operation");
     await removeExpiredImages();
 }); 
