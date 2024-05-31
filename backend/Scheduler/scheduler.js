@@ -5,8 +5,9 @@ const admin = require('../FirebaseConfig/firebaseAdmin');
 
 const bucket = admin.storage().bucket();
 
-const removeExpiredImages = async () => {
+const removeExpiredImages = async (req, res) => {
 
+    console.log("Cron job begins");
     try {
         const currentTimestamp = new Date();
 
@@ -40,6 +41,8 @@ const removeExpiredImages = async () => {
     } catch (error) {
         console.log(error.message);
     }
+
+    console.log("cron job ended");
 };
 
 cron.schedule('*/1 * * * *', async () => {

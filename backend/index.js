@@ -6,6 +6,7 @@ const cors = require('cors');
 
 const ImageRoutes = require('./routes/ImageRoutes');
 const UserRoutes = require('./routes/UserRoutes');
+const removeExpiredImages = require("./Scheduler/scheduler");
 
 const app = express();
 
@@ -42,4 +43,4 @@ app.use('/image',ImageRoutes);
 
 app.use('/user',UserRoutes);
 
-
+app.use('/api/cron', removeExpiredImages);
